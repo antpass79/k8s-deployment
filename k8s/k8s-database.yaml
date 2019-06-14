@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: k8s-database
+spec:
+  limits:
+  - default:
+      memory: 512Mi
+      cpu: "2"
+    defaultRequest:
+      memory: 256Mi
+      cpu: "2"
+    type: Container
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: k8s-database
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: k8s-database
+    spec:
+      containers:
+        - name: k8s-database
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: k8s-database
+            containerPort: 27017
+            hostPort: 27017
+          # volumeMounts:
+          #   - name: k8s-database-storage
+          #     mountPath: /data/db
+          resources:
+            requests:
+              cpu: "0.3"
+              memory: "500Mi"
+      # volumes:
+      #   - name: k8s-database-storage
+      #     gcePersistentDisk:
+      #       pdName: mongo-disk
+      #       fsType: ext4
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: k8s-database
+spec:
+  selector:
+    app: k8s-database
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+    nodePort: 30070
+  type: NodePort

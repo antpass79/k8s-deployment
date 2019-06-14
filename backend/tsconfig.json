@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "commonjs",
+        "outDir": "backend",
+        "rootDir": "src", 
+        "sourceMap": true,
+        "lib": ["es6", "dom"],
+        "esModuleInterop": true,   
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+}
