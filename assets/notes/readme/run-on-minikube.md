@@ -75,7 +75,7 @@ You can reach the same result following these steps:
 
 For **exposing the backend** as a service browsable outside of k8s, the procedure is similar to the k8s-frontend.
 
-First of all, because I said before that I don't want to deploy the database on the server, under *backend->assets->config.json*, set:
+First of all, because I said before that I don't want to deploy the database on k8s, under *backend->assets->config.json*, set:
 
     "CONNECTION_STRING": "mongodb://localhost/",
 
