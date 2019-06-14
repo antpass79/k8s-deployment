@@ -1,0 +1,10 @@
+.send-area {
+  flex: 1;
+  display: flex;
+  align-self: center;
+}
+
+.send-area-container {
+  display: flex;
+  align-self: center;
+}

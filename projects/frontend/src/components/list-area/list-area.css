@@ -1,0 +1,5 @@
+.list-area {
+  display: flex;
+  align-self: center;  
+  flex: 1;  
+}
