@@ -32,14 +32,14 @@ Here there is the list of what I would like to learn:
 
 Now we can the application in different environments, in order to understand what is steps that I did to deploy on k8s:
 
-- [Run Locally](assets/readme/run-locally.md)
-- [Run on Minikube](assets/readme/run-on-minikube.md)
+- [Run Locally](assets/notes/readme/run-locally.md)
+- [Run on Minikube](assets/notes/readme/run-on-minikube.md)
 
 In the sections below there are commands and examples useful fo this project:
 
 - [Docker Commands](assets/notes/docker-commands.md)
 - [K8s Commands](assets/notes/k8s-commands.md)
-- [Nginx configuration](assets/notes/nginx-configuration.md)
+- [Nginx Configuration](assets/notes/nginx-configuration.md)
 
 ## References
 
