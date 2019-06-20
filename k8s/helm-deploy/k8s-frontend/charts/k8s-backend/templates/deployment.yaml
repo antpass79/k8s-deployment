@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    app.kubernetes.io/name: {{ include "k8s-backend.name" . }}
+    helm.sh/chart: {{ include "k8s-backend.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "k8s-backend.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        app.kubernetes.io/name: {{ include "k8s-backend.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - containerPort: 5000
+        env:
+          - name: CONNECTION_STRING
+            value: "mongodb://192.168.99.105:30070/"
+          - name: DATABASE_NAME
+            value: "messages"
+          - name: SERVER_PORT
+            value: "5000"
+          - name: ORIGINS_WHITE_LIST
+            value: "['http://localhost:3000', 'http://192.168.99.105:30050']"
+        resources:
+          requests:
+            cpu: "0.3"
+            memory: "500Mi"

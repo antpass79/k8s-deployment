@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf
+data:
+  {{- (.Files.Glob "foo/*").AsConfig | nindent 2 }}
+
+{{/*apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: {{ .Release.Name }}-configmap
+    labels:
+    {{- include "mychart.labels" . | nindent 6 }}
+data:
+    myvalue: "Hello World"
+    {{- include "mychart.labels" . | nindent 4 }}
+    {{- $releaseName := .Release.Name }}
+    {{- with .Values.favorite }}
+    drink: {{ .drink | default "tea" | repeat 5 | quote }}
+    food: {{ .food | upper | quote }}
+    {{- if (.drink) and eq .drink "coffee" }}
+    mug: true
+    {{- end }}
+    release: {{ $releaseName }}
+    {{- end }}
+    toppings: |-
+        {{- range .Values.pizzaToppings }}
+        - {{ . | title | quote }}
+        {{- end}}
+    betterToppings: |-
+        {{- range $index, $topping := .Values.pizzaToppings }}
+        {{ $index }}: {{ $topping | title | quote }}
+        {{- end}}
+    sizes: |-
+        {{- range tuple "small" "medium" "large" }}
+        - {{ . }}
+        {{- end }}
+    favorites:
+        {{- range $key, $val := .Values.favorite }}
+        {{ $key }}: {{ $val | quote }}
+        {{- end}}
+    files:
+        {{- $files := .Files }}
+        {{- range tuple "config1.toml" "config2.toml" "config3.toml" }}
+        {{ . }}: |-
+            {{ $files.Get . }}
+        {{- end }}
+        {{- (.Files.Glob "foo/*").AsConfig | nindent 8 }}        
+*/}}

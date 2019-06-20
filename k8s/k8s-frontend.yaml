@@ -59,3 +59,20 @@ spec:
     targetPort: 80
     nodePort: 30050
   type: NodePort
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: k8s-frontend
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: \"false\"
+    nginx.org/server-snippet: "proxy_ssl_verify off;"
+spec:
+  rules:
+  - host: k8s-frontend.com
+    http:
+      paths:
+      - backend:
+          serviceName: k8s-frontend
+          servicePort: 80
+        path: /*

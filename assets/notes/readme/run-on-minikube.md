@@ -1,6 +1,6 @@
 # Run on Minikube
 
-First of all install minikube, following one of many example on Internet.
+First of all minikube installation needs. Follow one of many example on Internet.
 
 In order to set the minikube context, you need to use the minikube deamon for building images through *docker build* command (use PowerShell).
 
@@ -14,9 +14,9 @@ The context is related to the PowerShell instance.
 
 To deploy the system on k8s, you can choose different ways:
 
-- [Manual Deployment](#manual-deployment)
-- [Yaml Deployment](#yaml-deployment)
-- [Heml Deployment](#heml-deployment)
+- [Manual Deployment](#manual-deployment).
+- [Yaml Deployment](#yaml-deployment).
+- [Heml Deployment](#heml-deployment).
 
 The best and robust approach is to use heml, but now I want to explore the first two methods, in order to better understand all steps.
 
@@ -158,16 +158,23 @@ The last step is to **expose the frontend**, typing:
 
 The Dockerfile has not a *CMD* or *ENTRYPOINT* specified. It is left at deployment time, in order to run env-runtime.sh for updating the env-config.js (see *Fontend Configuration* in [Run Locally](run-locally.md)), based on env section in yaml file, in which there are all environment variables used in the code.
 
-The 2 sections above are useful when there is one only application or 2 applications that must communicate each other. But for complex systems in which there are many components involved, the yaml file comes in help.
-This system is composed by:
+The frontend has a one more definition than the other two components, the **ingress**, in order to access to the web application through a custom name, for example:
 
-    - frontend
-    - backend
-    - database
+    k8s-frontend.com
+
+For doing that in hosts file you have to map this name with the *ingress ip*. Check it typing:
+
+    kubectl get ingress
 
 It's a simple system, of course, but to understand what kind of configurations is possible to apply is a good starting point.
 
-### Environment Variables
+NOTES:
+
+To use the Ingress, you must enable the addon on minikube:
+
+        minikube addons enable ingress
+
+#### Environment Variables
 
 For the backend application, that's easy. Once you have defined the **env** section for a container in the Deployment definition of the yaml file:
 
@@ -217,6 +224,26 @@ The script, as last job, runs nginx.
 
 *--force* flag permits to update the deployment also if the deployment already exists on k8s, without to delete it before.
 
+### Helm Deployment
+
+For complex systems is really difficult to manage the deployment manually with yaml files.
+Helm comes in help. In the *References* section there are some useful links to learn this tool.
+
+Under the folder *k8s* there is the *k8s-deployment* chart for deploying this simple system on Kubernetes.
+
+To debug the system type:
+
+    helm install --debug --dry-run .\k8s-deployment\
+
+To install the system type:
+
+    helm install .\k8s-deployment\
+
+To delete the release, get the list of releases and delete what you want:
+
+    helm list
+    helm delete <<release_name>>
+
 ## Resources
 
 For a better usage of resources, in order to not have problems running containers, the following section must be specified for each container, backend, frontend and database:
@@ -229,6 +256,19 @@ For a better usage of resources, in order to not have problems running container
     ...
 
 ## References
+
+### k8s - Helm
+
+- https://helm.sh/docs/chart_template_guide/
+- https://docs.bitnami.com/kubernetes/get-started-kubernetes/
+- https://www.baeldung.com/kubernetes-helm
+- https://medium.com/faun/standardising-deployment-patterns-using-helm-chart-2c2b7a592b19
+
+### k8s - Ingress
+
+- https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/#enable-the-ingress-controller
+- https://medium.com/@awkwardferny/getting-started-with-kubernetes-ingress-nginx-on-minikube-d75e58f52b6c
+- https://medium.com/@Oskarr3/setting-up-ingress-on-minikube-6ae825e98f82
 
 ### k8s - Debug
 
